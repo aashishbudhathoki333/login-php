@@ -1,0 +1,322 @@
+PROJECT DOCUMENTATION
+
+This is a very simple PHP login project made for learning purposes.
+It uses PHP sessions to remember whether a user is logged in or not.
+
+The project has 4 files:
+1. login.php
+2. check.php
+3. welcome.php
+4. logout.php
+
+How the project works:
+1. The user opens login.php and sees the login form.
+2. The form sends the username and password to check.php.
+3. check.php compares the entered values with the fixed demo values.
+4. If the values are correct, the username is saved in the session and the user is sent to welcome.php.
+5. welcome.php allows access only if the session contains the username.
+6. logout.php removes the session data and sends the user back to login.php.
+
+==================================================
+FILE 1: login.php
+==================================================
+
+Line 1: <?php
+This line starts PHP code.
+
+Line 2: // Start the session so we can check whether the user is already logged in.
+This is a comment. It explains that the session is being started.
+
+Line 3: session_start();
+This starts or resumes a session. A session lets PHP store data for a user between pages.
+
+Line 4:
+This is just a blank line to make the code easier to read.
+
+Line 5: // If the username is already stored in the session, send the user to the welcome page.
+This comment explains the condition written below.
+
+Line 6: if (isset($_SESSION["username"])) {
+This checks whether the session already has a value called "username".
+If it exists, it means the user is already logged in.
+
+Line 7: header("Location: welcome.php"); // Already logged in
+This sends the user to welcome.php.
+The comment says the reason: the user is already logged in.
+
+Line 8: exit();
+This stops the script immediately after the redirect.
+It is important because we do not want the rest of the page to continue running.
+
+Line 9: }
+This closes the if block.
+
+Line 10: ?>
+This ends the PHP section.
+
+Line 11:
+This is a blank line.
+
+Line 12: <!DOCTYPE html>
+This tells the browser that the page is an HTML5 document.
+
+Line 13: <html>
+This starts the HTML document.
+
+Line 14: <head>
+This starts the head section of the page.
+
+Line 15: <title>Login</title>
+This sets the page title to "Login".
+The title is shown on the browser tab.
+
+Line 16: </head>
+This closes the head section.
+
+Line 17: <body>
+This starts the visible body part of the webpage.
+
+Line 18: <h2>Login Form</h2>
+This displays a heading on the page.
+
+Line 19: <!-- This form sends the username and password to check.php using the POST method. -->
+This is an HTML comment.
+It explains what the form does.
+
+Line 20: <form action="check.php" method="POST">
+This creates a form.
+action="check.php" means the form data will be sent to check.php.
+method="POST" means the data is sent securely in the request body, not in the URL.
+
+Line 21: Username: <input type="text" name="username" required><br><br>
+This creates a text input box for the username.
+name="username" is the key PHP will use to read this value.
+required means the field cannot be left empty.
+<br><br> adds two line breaks.
+
+Line 22: Password: <input type="password" name="password" required><br><br>
+This creates a password box.
+type="password" hides the characters while typing.
+name="password" is the key PHP will use to read this value.
+required means the field is mandatory.
+
+Line 23: <button type="submit">Login</button>
+This creates a button that submits the form.
+
+Line 24: </form>
+This closes the form.
+
+Line 25: </body>
+This closes the body section.
+
+Line 26: </html>
+This closes the HTML document.
+
+==================================================
+FILE 2: check.php
+==================================================
+
+Line 1: <?php
+This starts PHP code.
+
+Line 2: // Start the session so we can save login information after checking the form data.
+This comment explains why session_start() is needed here.
+
+Line 3: session_start();
+This starts or resumes the session so we can store data in $_SESSION.
+
+Line 4:
+This is a blank line.
+
+Line 5: // Fake credentials (for demo only)
+This comment says the username and password below are only fixed demo values.
+
+Line 6: $correct_username = "krishna";
+This stores the allowed username in a variable.
+
+Line 7: $correct_password = "1234";
+This stores the allowed password in another variable.
+
+Line 8:
+This is a blank line.
+
+Line 9: // Read the values sent from login.php.
+This comment explains that the next lines get form data.
+
+Line 10: $uname = $_POST["username"];
+This gets the username entered in the form.
+$_POST is a special PHP array that contains values sent by the POST method.
+
+Line 11: $pass = $_POST["password"];
+This gets the password entered in the form.
+
+Line 12:
+This is a blank line.
+
+Line 13: // If both values match, store the username in the session and move to the welcome page.
+This comment explains the login check.
+
+Line 14: if ($uname === $correct_username && $pass === $correct_password) {
+This checks two things:
+1. The entered username matches the correct username.
+2. The entered password matches the correct password.
+The && symbol means "and".
+The === operator checks exact equality.
+
+Line 15: $_SESSION["username"] = $uname;
+This saves the username in the session.
+Now other pages can know that the user is logged in.
+
+Line 16: header("Location: welcome.php");
+This redirects the user to the welcome page.
+
+Line 17: exit();
+This stops the script after redirecting.
+
+Line 18: } else {
+This means if the login details are not correct, run the code below.
+
+Line 19: // If the login details are wrong, show a simple message and a link back to the form.
+This comment explains the else block.
+
+Line 20: echo "Invalid username or password. <a href='login.php'>Try again</a>";
+This prints an error message on the screen.
+It also shows a link that sends the user back to the login page.
+
+Line 21: }
+This closes the if-else block.
+
+Line 22: ?>
+This ends the PHP code.
+
+==================================================
+FILE 3: welcome.php
+==================================================
+
+Line 1: <?php
+This starts PHP code.
+
+Line 2: // Start the session so we can read the stored username.
+This comment explains why the session is started.
+
+Line 3: session_start();
+This starts or resumes the session.
+
+Line 4:
+This is a blank line.
+
+Line 5: // Check if user is logged in
+This comment explains the condition below.
+
+Line 6: if (!isset($_SESSION["username"])) {
+This checks whether the session does NOT contain "username".
+The ! symbol means "not".
+If there is no username in the session, the user is not logged in.
+
+Line 7: header("Location: login.php");
+This redirects the user to the login page.
+
+Line 8: exit();
+This stops the script after the redirect.
+
+Line 9: }
+This closes the if block.
+
+Line 10: ?>
+This ends the PHP section.
+
+Line 11:
+This is a blank line.
+
+Line 12: <!DOCTYPE html>
+This declares the document type as HTML5.
+
+Line 13: <html>
+This starts the HTML document.
+
+Line 14: <head>
+This starts the head section.
+
+Line 15: <title>Welcome</title>
+This sets the browser tab title to "Welcome".
+
+Line 16: </head>
+This closes the head section.
+
+Line 17: <body>
+This starts the body section.
+
+Line 18: <!-- Show the username that was saved in the session after login. -->
+This HTML comment explains the line below.
+
+Line 19: <h2>Welcome, <?php echo $_SESSION["username"]; ?>!</h2>
+This prints a welcome message.
+Inside the heading, PHP is used again.
+echo means "display this value".
+$_SESSION["username"] shows the username saved during login.
+
+Line 20: <p>You are now logged in.</p>
+This shows a short message to the user.
+
+Line 21: <a href="logout.php">Logout</a>
+This creates a link to logout.php.
+When the user clicks it, the session will be cleared.
+
+Line 22: </body>
+This closes the body section.
+
+Line 23: </html>
+This closes the HTML document.
+
+==================================================
+FILE 4: logout.php
+==================================================
+
+Line 1: <?php
+This starts PHP code.
+
+Line 2: // Start the session so PHP knows which session we want to clear.
+This comment explains the need for session_start().
+
+Line 3: session_start();
+This starts or resumes the current session.
+
+Line 4: session_unset(); // Remove all session variables
+This removes all data stored in the session variables.
+
+Line 5: session_destroy(); // Destroy session
+This completely destroys the session.
+
+Line 6: // After logout, return the user to the login page.
+This comment explains the redirect below.
+
+Line 7: header("Location: login.php");
+This sends the user back to the login page after logout.
+
+Line 8: exit();
+This stops the script.
+
+Line 9: ?>
+This ends the PHP code.
+
+==================================================
+SIMPLE SUMMARY
+==================================================
+
+This project is a basic login system for practice.
+It is not secure for real websites because:
+1. The username and password are written directly in the code.
+2. The password is not encrypted.
+3. There is no database.
+4. There is no protection against advanced attacks.
+
+Still, this project is very useful for learning:
+1. How forms work in PHP
+2. How POST data is received
+3. How sessions work
+4. How page redirection works
+5. How login and logout flow works
+
+Demo login details:
+Username: krishna
+Password: 1234
